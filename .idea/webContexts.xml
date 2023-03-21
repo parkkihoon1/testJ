@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebContextManager">
+    <option name="state">
+      <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/board/updateForm.jsp" value="file://$PROJECT_DIR$/src/main/webapp/board" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/board/view.jsp" value="file://$PROJECT_DIR$/src/main/webapp/board" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/market/board/controll.jsp" value="file://$PROJECT_DIR$/src/main/webapp/market/board" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/market/board/updateForm.jsp" value="file://$PROJECT_DIR$/src/main/webapp/market/board" />
+      </map>
+    </option>
+  </component>
+</project>
