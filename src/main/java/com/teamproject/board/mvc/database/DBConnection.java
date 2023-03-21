@@ -1,4 +1,4 @@
-package mvc.database;
+package com.teamproject.board.mvc.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

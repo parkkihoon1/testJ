@@ -1,9 +1,8 @@
-package mvc.controller;
+package com.teamproject.board.mvc.controller;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,7 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import mvc.model.*;
+import com.teamproject.board.mvc.model.BoardDAO;
+import com.teamproject.board.mvc.model.BoardDTO;
+import com.teamproject.board.mvc.model.RippleDAO;
+import com.teamproject.board.mvc.model.RippleDTO;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 

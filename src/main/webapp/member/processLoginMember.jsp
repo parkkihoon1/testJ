@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
-<%@ page import="dao.CartDAO" %>
+<%@ page import="com.teamproject.cart.mvc.model.CartDAO" %>
 <%@ include file="../inc/dbconn.jsp" %>
 <!DOCTYPE html>
 

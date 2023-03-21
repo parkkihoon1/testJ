@@ -1,13 +1,11 @@
-package mvc.model;
+package com.teamproject.board.mvc.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import javax.management.RuntimeErrorException;
-
-import mvc.database.DBConnection;
+import com.teamproject.board.mvc.database.DBConnection;
 
 public class BoardDAO {
     // DAO(Data Access Object) 는 데이터 베이스의 data에 접근하기 위한 객체

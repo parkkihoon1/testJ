@@ -1,7 +1,5 @@
-<%@page import="mvc.model.RippleDTO"%>
-<%@page import="mvc.model.RippleDAO"%>
-<%@ page import="mvc.model.ReportDAO" %>
-<%@ page import="mvc.model.ReportDTO" %>
+<%@ page import="com.teamproject.board.mvc.model.ReportDAO" %>
+<%@ page import="com.teamproject.board.mvc.model.ReportDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%

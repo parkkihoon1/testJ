@@ -3,7 +3,7 @@
 <%@page import="javax.swing.border.Border"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="mvc.model.BoardDTO"%>
+<%@ page import="com.teamproject.board.mvc.model.BoardDTO"%>
 <%
     BoardDTO board = (BoardDTO) request.getAttribute("board");
     int nowpage = ((Integer) request.getAttribute("page")).intValue();
