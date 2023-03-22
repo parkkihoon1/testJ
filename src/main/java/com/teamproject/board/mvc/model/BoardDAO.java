@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.teamproject.board.mvc.database.DBConnection;
 
@@ -391,6 +392,104 @@ public class BoardDAO {
             }
         }
         return board.getFilename();
+    }
+    //추가~!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    public int getListCount(String sessionId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        int x = 0;
+
+        String sql;
+        sql = "select count(*) from board where id = ?";
+
+        try {
+            conn = DBConnection.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, sessionId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next())
+                x = rs.getInt(1);
+
+        } catch (Exception ex) {
+            System.out.println("getListCount() 뿉 윭 : " + ex);
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (conn != null)
+                    conn.close();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        }
+        return x;
+    }
+
+
+
+
+
+    public List<BoardDTO> getboardlist(int page, int limit, String sessionId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        int total_record = getListCount(sessionId);
+        int start = (page - 1) * limit;
+        int index = start + 1;
+
+        String sql = "SELECT * FROM board where id = ?";
+
+        ArrayList<BoardDTO> list = new ArrayList<BoardDTO>();
+
+        try {
+            conn = DBConnection.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, sessionId);
+            rs = pstmt.executeQuery();
+
+            // ResultSet .absolute(int index) : ResultSet 而ㅼ꽌瑜   썝 븯 뒗  쐞移  (Index) 쓽 寃  깋 뻾 쑝濡   씠 룞 븯 뒗 硫붿꽌 뱶.
+            while (rs.absolute(index)) {
+                BoardDTO boardDTO = new BoardDTO();
+                boardDTO.setNum(rs.getInt("num"));
+                boardDTO.setId(rs.getString("id"));
+                boardDTO.setName(rs.getString("name"));
+                boardDTO.setSubject(rs.getString("subject"));
+                boardDTO.setContent(rs.getString("content"));
+                boardDTO.setRegist_day(rs.getString("regist_day"));
+                boardDTO.setHit(rs.getInt("hit"));
+                boardDTO.setIp(rs.getString("ip"));
+                boardDTO.setFilename(rs.getString("filename"));
+                boardDTO.setFilesize(rs.getInt("filesize"));
+                list.add(boardDTO);
+
+                if (index < (start + limit) && index <= total_record)
+                    index++;
+                else
+                    break;
+            }
+            return list;
+        } catch (Exception ex) {
+            System.out.println("getBoardList 뿉 윭 : " + ex);
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (conn != null)
+                    conn.close();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        }
+        return null;
     }
 
 }

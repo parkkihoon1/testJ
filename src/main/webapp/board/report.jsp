@@ -11,8 +11,7 @@
     report.setReportNum(Integer.parseInt(request.getParameter("reportNum")));
     report.setBoardNum(Integer.parseInt(request.getParameter("num")));
     report.setMemberId((String) session.getAttribute("sessionId"));
-    report.setSubject(request.getParameter("subject"));
-    report.setContent(request.getParameter("content"));
+    report.setReportContent(request.getParameter("report"));
     report.setInsertDate(request.getParameter("date"));
 
     if(dao.insertReport(report)) {

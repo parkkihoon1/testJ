@@ -17,10 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.teamproject.board.mvc.model.BoardDAO;
-import com.teamproject.board.mvc.model.BoardDTO;
-import com.teamproject.board.mvc.model.RippleDAO;
-import com.teamproject.board.mvc.model.RippleDTO;
+import com.teamproject.board.mvc.model.*;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 
@@ -87,16 +84,15 @@ public class BoardController extends HttpServlet {
             requestBoardDelete(req);
             RequestDispatcher rd = req.getRequestDispatcher("../board/BoardListAction.do");
             rd.forward(req, resp);
-        }
-        else if (command.contains("RippleDeleteAction.do")) { // 댓글 삭제하기
+        } else if (command.contains("RippleDeleteAction.do")) { // 댓글 삭제하기
             requestRippleDelete(req, resp);
         } else if (command.contains("RippleWriteAction.do")) { // 댓글 등록하기
             requestRippleWrite(req, resp);
         } else if (command.contains("RippleListAction.do")) { // 댓글 목록 출력
             requestRippleList(req, resp);
-        }
-
-        else {
+        } else if (command.contains("ReportAction.do")) { //신고하기
+            requestReportWrite(req, resp);
+        } else {
             System.out.println("out: " + command);
             // 결과 화면을 출력 스트림을 통해 출력
             PrintWriter out = resp.getWriter();
@@ -266,7 +262,7 @@ public class BoardController extends HttpServlet {
         BoardDAO dao = BoardDAO.getInstance();
 
         dao.getFileName(num);
-        System.out.println("getfileName() : "+dao.getFileName(num));
+        System.out.println("getfileName() : " + dao.getFileName(num));
 
         BoardDTO board = new BoardDTO();
 
@@ -279,8 +275,6 @@ public class BoardController extends HttpServlet {
         board.setName(req.getParameter("name"));
         board.setSubject(req.getParameter("subject"));
         board.setContent(req.getParameter("content"));
-
-
 
 
         // 폼 페이지에서 전송된 파일을 저장할 서버의 경로를 작성.
@@ -320,8 +314,7 @@ public class BoardController extends HttpServlet {
                     case "chkdID":
                         if (value == null || value.equals("")) {
                             System.out.println("체크 안됨");
-                        }
-                        else {
+                        } else {
                             System.out.println("체크 됨");
                             dao.deleteImg(num);
                             System.out.println(value);
@@ -333,13 +326,8 @@ public class BoardController extends HttpServlet {
                 }
 
 
-
                 System.out.println(name + "=" + value + "<br>");
-            }
-
-
-
-            else {
+            } else {
                 // 폼 페이지에서 전송된 요청 파라미터가 파일이면
                 // 요청 파라미터의 이름, 저장 파일의 이름, 파일 컨텐트 유형, 파일 크기에 대한 정보를 출력.
                 String fileFieldName = item.getFieldName();
@@ -356,9 +344,7 @@ public class BoardController extends HttpServlet {
                     System.out.println("저장 파일 이름 : " + fileName + "<br>");
                     System.out.println("파일 콘텐츠 타입 : " + contentType + "<br>");
                     System.out.println("파일크기 :" + fileSize);
-                }
-
-                else { //파일 변경 했을 때
+                } else { //파일 변경 했을 때
                     fileName = nowStr + item.getName();
                     System.out.println("파일 이름 :" + fileName);
                     fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
@@ -393,7 +379,6 @@ public class BoardController extends HttpServlet {
         BoardDAO dao = BoardDAO.getInstance();
         dao.deleteBoard(num);
     }
-
 
 
     // 댓글 등록
@@ -471,6 +456,29 @@ public class BoardController extends HttpServlet {
         // 결과 화면을 출력 스트림을 통해 출력
         PrintWriter out = resp.getWriter();
         out.append(result.toString());
+    }
+
+    //신고하기
+    public void requestReportWrite(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        ReportDAO dao = ReportDAO.getInstance();
+        ReportDTO report = new ReportDTO();
+        HttpSession session = req.getSession();
+
+        req.setCharacterEncoding("utf-8");
+
+        report.setBoardNum(Integer.parseInt(req.getParameter("num")));
+        report.setMemberId((String) session.getAttribute("sessionId"));
+        report.setReportContent(req.getParameter("report"));
+
+
+        String result = "{\"result\" : ";
+        if (dao.insertReport(report)) {
+            result += "\"true\"}";
+        } else {
+            result += "\"false\"}";
+        }
+
     }
 
 

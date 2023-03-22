@@ -20,25 +20,45 @@
     <title>상세보기</title>
     <%--  신고하기--%>
     <script>
-        function report_post() {
-            if (${sessionId==null}) {
-                alert("로그인 후 사용 가능합니다.")
-                location.href = "../member/loginMember.jsp"
-            } else {
-                const content = prompt("신고 사유를 입력해주세요." + "");
-            }
+        document.addEventListener("DOMContentLoaded", function () {
+            const xhr = new XMLHttpRequest(); //XMLHttpRequest 객체 생성
 
-            }
+            document.querySelector('span[name=goReport]').addEventListener('click', function () {
+
+                const report = prompt("신고 사유를 입력해주세요." + "");
+                let num = document.querySelector('input[name=num]');
+                let content = document.querySelector('textarea[name=report]');
+
+                console.log(report);
+
+                //xhr.open('POST', '../board/ajax_insert_content.jsp?boardName=board&num=' +
+                //num.value + '&name=' + name.value + '&content=' + content.value);
+                xhr.open('POST', '../boardController/ReportAction.do?report=' + report + '&num=' + num.value);
+                xhr.send();
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState !== XMLHttpRequest.DONE) return;
+
+                    if (xhr.status === 200) { //서버(url)에 문서가 존재함
+                        console.log(xhr.response);
+                        const json = JSON.parse(xhr.response);
+                        if (json.result === 'true') {
+                            content.value = ''; // input 태그에 입력된 값 삭제
+                            insertList();
+                        } else {
+                            alert("삭제에 실패했습니다.");
+                        }
+                    } else { //서버(url)에 문서가 존재하지 않음.
+                        console.error('Error', xhr.status, xhr.statusText);
+                    }
+                }
+            });
+        });
     </script>
 
 </head>
 <body>
 <jsp:include page="../inc/header.jsp"/>
-<%--<div class="jumbotron">--%>
-<%--  <div class="container">--%>
-<%--    <h4 class="display-3">게시판</h4>--%>
-<%--  </div>--%>
-<%--</div>--%>
+
 <div class="container my-5">
     <div class="mb-4 row">
         <label class="col-sm-2 col-form-label text-center">성명</label>
@@ -222,12 +242,14 @@
             <c:set var="userId" value="<%=board.getId()%>"/>
             <c:if test="${sessionId==userId}">
 
-                <span class="btn btn-success" name="goReport" onclick="goUpdate();">수정</span>
-                    <%--          <a href="./BoardListAction.do?pageNum=<%=nowpage%>" class="btn btn-primary">목록</a></p>--%>
-                </c:if>
-                <a href="./BoardListAction.do?pageNum=<%=nowpage%>" class="btn btn-primary">목록</a>
-              <input type="button" value="신고" onclick="report_post()">
+                <span class="btn btn-success" onclick="goUpdate();">수정</span>
+                <%--          <a href="./BoardListAction.do?pageNum=<%=nowpage%>" class="btn btn-primary">목록</a></p>--%>
+            </c:if>
+            <a href="./BoardListAction.do?pageNum=<%=nowpage%>" class="btn btn-primary">목록</a>
 
+            <c:if test="${sessionId != null}">
+                <span class="btn btn-danger" name="goReport">신고</span>
+            </c:if>
         </div>
     </div>
     <form name="frmUpdate" method="post">
@@ -247,8 +269,6 @@
                 frm.submit();
             }
         }
-
-
     </script>
 </div>
 <jsp:include page="../inc/footer.jsp"/>

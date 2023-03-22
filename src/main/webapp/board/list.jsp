@@ -26,7 +26,7 @@
                 ${sessionId==null}) {
                 alert("로그인 해주세요.");
                 location.href = "../member/loginMember.jsp"
-            }else{
+            } else {
                 location.href = "./BoardWriteForm.do?id=<%=sessionId%>"
             }
 
@@ -158,13 +158,13 @@
                     <option value="content">본문에서</option>
                     <option value="name">글쓴이에서</option>
 
-                <input class="" name="text" type="text" placeholder="검색어입력"/>
-<%--                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">--%>
-                <input type="submit"
-                       class="btn btn-primary "
-                       value="검색 "/>
-                <a href="#"
-                   onclick="checkForm(); return false;" class="btn btn-primary">글쓰기</a>
+                    <input class="" name="text" type="text" placeholder="검색어입력"/>
+                    <%--                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">--%>
+                    <input type="submit"
+                           class="btn btn-primary "
+                           value="검색 "/>
+                    <a href="#"
+                       onclick="checkForm(); return false;" class="btn btn-primary">글쓰기</a>
             </div>
 
         </div>

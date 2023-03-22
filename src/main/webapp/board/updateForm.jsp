@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@page import="javax.swing.border.Border"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*"%>
-<%@ page import="com.teamproject.board.mvc.model.BoardDTO"%>
+         pageEncoding="UTF-8" %>
+<%@page import="javax.swing.border.Border" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.teamproject.board.mvc.model.BoardDTO" %>
 <%
     BoardDTO board = (BoardDTO) request.getAttribute("board");
     int nowpage = ((Integer) request.getAttribute("page")).intValue();
@@ -17,7 +17,7 @@
     <title>업데이트</title>
 </head>
 <body>
-<jsp:include page="../inc/header.jsp" />
+<jsp:include page="../inc/header.jsp"/>
 <div class="jumbotron">
     <div class="container">
         <h1 class="display-3">게시판</h1>
@@ -74,20 +74,20 @@
     </form>
     <hr>
 </div>
-<jsp:include page="../inc/footer.jsp" />
+<jsp:include page="../inc/footer.jsp"/>
 <script>
     let arrID = new Array();
 
-    let setChkAlone = function(T) { //개별 선택
-        with(frmName()) {
+    let setChkAlone = function (T) { //개별 선택
+        with (frmName()) {
             if (T.checked) {
                 setArrChange(true, T.value);
-            }
-            else {
+            } else {
                 setArrChange(false, T.value);
             }
         }
     }
+
     function frmName() {
         return document.newUpdate;
     }
@@ -95,14 +95,14 @@
     let setArrChange = function (flag, ID) {
         var idx = null;
 
-        for ( i = 0; i < arrID.length; i++) {
-            if(arrID[i] === ID) {
+        for (i = 0; i < arrID.length; i++) {
+            if (arrID[i] === ID) {
                 idx = i;
             }
         }
 
         if (idx != null) {
-            arrID.splice(idx,1);
+            arrID.splice(idx, 1);
         }
 
         if (flag) {
