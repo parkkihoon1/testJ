@@ -3,12 +3,13 @@
 <%@page import="javax.swing.border.Border" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
-<%@ page import="com.teamproject.board.mvc.model.BoardDTO" %>
+<%@ page import="com.teamProject.board.model.BoardDTO" %>
 <%
     BoardDTO board = (BoardDTO) request.getAttribute("board");
 
     int num = ((Integer) request.getAttribute("num")).intValue();
     int nowpage = ((Integer) request.getAttribute("page")).intValue();
+
 
 %>
 <!DOCTYPE html>
@@ -27,13 +28,13 @@
 
                 const report = prompt("신고 사유를 입력해주세요." + "");
                 let num = document.querySelector('input[name=num]');
+                let subject = document.querySelector('input[name=subject]');
                 let content = document.querySelector('textarea[name=report]');
 
-                console.log(report);
 
-                //xhr.open('POST', '../board/ajax_insert_content.jsp?boardName=board&num=' +
-                //num.value + '&name=' + name.value + '&content=' + content.value);
-                xhr.open('POST', '../boardController/ReportAction.do?report=' + report + '&num=' + num.value);
+
+
+                xhr.open('POST', '../boardController/ReportAction.do?report=' + report + '&num=' + num.value + '&subject=' + subject.value);
                 xhr.send();
                 xhr.onreadystatechange = () => {
                     if (xhr.readyState !== XMLHttpRequest.DONE) return;
@@ -61,7 +62,7 @@
 
 <div class="container my-5">
     <div class="mb-4 row">
-        <label class="col-sm-2 col-form-label text-center">성명</label>
+        <label class="col-sm-2 col-form-label text-center">회원ID</label>
         <div class="col-sm-10">
             <input type="text" class="form-control-sm" value="<%=board.getName()%>" readonly>
         </div>
@@ -246,15 +247,17 @@
                 <%--          <a href="./BoardListAction.do?pageNum=<%=nowpage%>" class="btn btn-primary">목록</a></p>--%>
             </c:if>
             <a href="./BoardListAction.do?pageNum=<%=nowpage%>" class="btn btn-primary">목록</a>
-
             <c:if test="${sessionId != null}">
+                <input type="hidden" name="subject" value="<%=board.getSubject()%>">
                 <span class="btn btn-danger" name="goReport">신고</span>
             </c:if>
+
         </div>
     </div>
     <form name="frmUpdate" method="post">
         <input type="hidden" name="num" value="<%=num%>">
         <input type="hidden" name="pageNum" value="<%=nowpage%>">
+
     </form>
     <script>
         let goUpdate = function () {

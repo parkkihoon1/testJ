@@ -1,4 +1,4 @@
-package com.teamproject.board.mvc.model;
+package com.teamProject.board.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teamproject.board.mvc.database.DBConnection;
+import com.teamProject.board.database.DBConnection;
 
 public class BoardDAO {
     // DAO(Data Access Object) 는 데이터 베이스의 data에 접근하기 위한 객체
@@ -361,11 +361,11 @@ public class BoardDAO {
 
     }
 
-    public String deleteImg(int num) {  //선택한 이미지 삭제
+    public String deleteImg(int num) {  //        ̹
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        BoardDTO board = null;
+        //BoardDTO board = new BoardDTO();
 
         try {
             String sql = "UPDATE board SET filename = null WHERE num = ?";
@@ -374,24 +374,19 @@ public class BoardDAO {
             pstmt.setInt(1, num);
             rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                board = new BoardDTO();
-                board.setFilename(rs.getString("filename"));
-            }
-
-        } catch (Exception ex) {
-            System.out.println("deleteImg() 에러 : " + ex);
+        } catch(Exception ex) {
+            System.out.println("deleteImg()      : " + ex);
         } finally {
             try {
-                if (pstmt != null)
+                if(pstmt != null)
                     pstmt.close();
-                if (conn != null)
+                if(conn != null)
                     conn.close();
-            } catch (Exception ex) {
+            } catch(Exception ex) {
                 throw new RuntimeException(ex.getMessage());
             }
         }
-        return board.getFilename();
+        return null;
     }
     //추가~!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

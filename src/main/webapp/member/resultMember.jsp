@@ -14,8 +14,8 @@
         <h1 class="display-3">회원정보</h1>
     </div>
 </div>
-<div class="container" align="center">
-    <%
+<div class="container div2" align="center">
+    <%--
         String msg = request.getParameter("msg");
 
         if(msg != null){
@@ -31,7 +31,48 @@
         else{
             out.println("<h2 class='alert alert-danger'>회원정보가 삭제되었습니다.</h2>");
         }
-    %>
+    --%>
+
+    <script>
+        let div2 = document.querySelector('.div2');
+        let msg = "${msg}";
+
+        if(msg != ""){
+
+            if(msg == "0"){
+                let h2 = document.createElement('h2');
+                h2.classList.add('alert');
+                h2.classList.add('alert-danger');
+
+                let text = document.createTextNode('회원정보가 수정되었습니다.');
+
+                h2.appendChild(text);
+                div2.appendChild(h2);
+            }
+            else if(msg == "1"){
+                let h2 = document.createElement('h2');
+                h2.classList.add('alert');
+                h2.classList.add('alert-danger');
+
+                let text = document.createTextNode('회원가입을 축하드립니다.');
+
+                h2.appendChild(text);
+                div2.appendChild(h2);
+            }
+
+        }
+        else{
+            let h2 = document.createElement('h2');
+            h2.classList.add('alert');
+            h2.classList.add('alert-danger');
+
+            let text = document.createTextNode('해당 작업에 실패하였습니다.');
+
+            h2.appendChild(text);
+            div2.appendChild(h2);
+        }
+
+    </script>
 </div>
 <%-- <jsp:include page="../inc/footer.jsp" /> --%>
 </body>

@@ -3,7 +3,7 @@
 <%@page import="javax.swing.border.Border" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
-<%@ page import="com.teamproject.board.mvc.model.BoardDTO" %>
+<%@ page import="com.teamProject.board.model.BoardDTO" %>
 <%
     BoardDTO board = (BoardDTO) request.getAttribute("board");
     int nowpage = ((Integer) request.getAttribute("page")).intValue();
@@ -28,10 +28,10 @@
           action="BoardUpdateAction.do?num=<%=board.getNum()%>&pageNum=<%=nowpage%>"
           class="form-horizontal" enctype="multipart/form-data" method="post">
         <div class="mb-4 row">
-            <label class="col-sm-2 col-form-label text-center">성명</label>
+            <label class="col-sm-2 col-form-label text-center">회원ID</label>
             <div class="col-sm-10">
                 <input name="name" type="text" class="form-control-sm"
-                       value="<%=board.getName()%>">
+                       value="<%=board.getName()%>" readonly>
             </div>
         </div>
         <div class="mb-4 row">

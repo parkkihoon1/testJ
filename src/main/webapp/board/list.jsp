@@ -2,8 +2,8 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
-<%@ page import="com.teamproject.board.mvc.model.BoardDAO" %>
-<%@ page import="com.teamproject.board.mvc.model.BoardDTO" %>
+<%@ page import="com.teamProject.board.model.BoardDAO" %>
+<%@ page import="com.teamProject.board.model.BoardDTO" %>
 <%
     String sessionId = (String) session.getAttribute("sessionId");
     List boardList = (List) request.getAttribute("boardlist");

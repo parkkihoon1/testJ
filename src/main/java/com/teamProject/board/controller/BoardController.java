@@ -1,4 +1,4 @@
-package com.teamproject.board.mvc.controller;
+package com.teamProject.board.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.teamproject.board.mvc.model.*;
+import com.teamProject.board.model.*;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 
@@ -74,6 +74,8 @@ public class BoardController extends HttpServlet {
             rd.forward(req, resp);
         } else if (command.contains("/BoardUpdateAction.do")) { //이미지 삭제
             try {
+//                String chkId = req.getParameter("chkdID");
+//                System.out.println(chkId);
                 requestBoardUpdate(req);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -317,6 +319,7 @@ public class BoardController extends HttpServlet {
                         } else {
                             System.out.println("체크 됨");
                             dao.deleteImg(num);
+                            board.setFilename(null);
                             System.out.println(value);
                         }
                         break;
@@ -469,6 +472,7 @@ public class BoardController extends HttpServlet {
 
         report.setBoardNum(Integer.parseInt(req.getParameter("num")));
         report.setMemberId((String) session.getAttribute("sessionId"));
+        report.setSubject(req.getParameter("subject"));
         report.setReportContent(req.getParameter("report"));
 
 

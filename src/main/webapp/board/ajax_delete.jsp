@@ -1,5 +1,5 @@
-<%@page import="com.teamproject.board.mvc.model.RippleDTO"%>
-<%@page import="com.teamproject.board.mvc.model.RippleDAO"%>
+<%@page import="com.teamProject.board.model.RippleDTO"%>
+<%@page import="com.teamProject.board.model.RippleDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%
