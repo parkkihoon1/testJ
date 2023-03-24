@@ -14,12 +14,11 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <%
     String cartId = session.getId();
-
+    String memberId = (String) session.getAttribute("sessionId");
   %>
   <title>장바구니</title>
 </head>
 <body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <jsp:include page="../inc/header.jsp" />
 <div class="jumbotron">
   <div class="container">
@@ -30,7 +29,7 @@
   <div class="row" >
     <table width="100%">
       <tr>
-        <td align="right"><a href="../order/form.co"  class="btn btn-primary btn-lg">주문하기</a></td>
+        <td align="right"><a href="javascript:;"  class="btn btn-primary btn-lg" onclick="cartOrder()">주문하기</a></td>
       </tr>
     </table>
   </div>
@@ -38,6 +37,8 @@
     <script type="text/javascript" src="../resources/js/check_system.js"></script>
     <form name="frmCart" method="get">
       <input type="hidden" name="id">
+      <input type="hidden" name="cnt">
+      <input type="hidden" name="chkID">
       <input type="text" name="chkdID" style="display:none;">
 
       <table class="table table-hover">
@@ -49,7 +50,7 @@
         </tr>
 
         <tr class="table-secondary" >
-          <th><input name="chkAll" type="checkbox" onclick="setChkAll();">상품</th>
+          <th>상품</th>
           <th>이미지</th>
           <th>가격</th>
           <th>수량</th>
@@ -60,26 +61,24 @@
         <%
           int sum = 0;
 
-
           ArrayList<CartDTO> cartArrayList = (ArrayList<CartDTO>) request.getAttribute("carts");
-
           for(CartDTO cart : cartArrayList){
             int total = cart.getProductPrice() * cart.getCnt();
             sum += total;
-
         %>
 
 
         <tr>
 
           <td>
-            <input type="text" name="productId" value="<%=cart.getProductId()%>">
-            <input type="checkbox" name="chkID" value="<%=cart.getCartId()%>" onClick="setChkAlone(this);">
-            <%=cart.getProductId()%> - <%=cart.getProductName() %>
+            <input type="hidden" name="productId" value="<%=cart.getProductId()%>">
+            <input type="checkbox" name="chkID<%=cart.getCartId()%>" value="<%=cart.getCartId()%>" onClick="setChkAlone(this);">
+
+            <a href="./product.jsp?productId=<%=cart.getProductId()%>" class="btn btn-outline-primary"> <%=cart.getProductId()%> - <%=cart.getProductName() %></a>
           </td>
           <td><img src="${pageContext.request.contextPath}/resources/images/<%=cart.getFileName()%>" class="img-thumbnail" style="width: 200px"></td>
           <td class="price"><%=cart.getProductPrice() %></td>
-          <td><input type="number" value="<%=cart.getCnt() %>" name="cnt" class="productCnt" onClick="cartCnt()"> <input type="button" value="수정" onclick="updateCart()"></td>
+          <td><input type="number" value="<%=cart.getCnt() %>" name="cnt<%=cart.getCartId()%>" class="productCnt" min="1" onClick="cartCnt()"> <input type="button" value="수정" onclick="updateCart(<%=cart.getCartId()%>)" class="btn btn-primary btn-sm"></td>
           <td class="total"><%=total %></td>
           <td><span class="badge text-bg-danger" onclick="removeCartById('<%=cart.getCartId()%>')">삭제</span></td>
         </tr>
@@ -105,7 +104,16 @@
       function frmName() {
         return document.frmCart;
       }
-
+      function cartOrder() {
+        let memberId = "<%=memberId%>";
+        if ( memberId == "null") {
+          alert("로그인 후 이용가능합니다.");
+          location.href="../member/loginMember.jsp";
+        }
+        else {
+          location.href="${pageContext.request.contextPath}/order/form.co";
+        }
+      }
     </script>
   </div>
   <script>
@@ -128,19 +136,18 @@
         location.href = 'deleteCart.jsp';
       }
     }
-    let updateCart = function() {
+    let updateCart = function(id) {
+      v = document.querySelector("[name = cnt" + id + "]" ).value;
+      v2 = document.querySelector("[name = chkID" + id + "]" ).value;
+      console.log(v);
+      frm.cnt.value = v;
+      frm.chkID.value = v2;
       if(confirm('선택한 상품을 수정하시겠습니까?')) {
-        frm.action = "updateCart.jsp";
+        frm.action = "updateCart.jsp?";
         frm.submit();
       }
     }
-  </script>
-  <a href="./products.jsp" class="btn btn-secondary"> &laquo; 쇼핑 계속하기</a>
-  <hr>
-  <jsp:include page="../inc/footer.jsp" />
 
-
-  <script>
     let cnt = document.querySelectorAll(".productCnt");
     let total = document.querySelectorAll(".total");
     let price = document.querySelectorAll(".price");
@@ -157,14 +164,11 @@
           }
           sum.innerText = num;
         });
-
       }
-
     }
-
-
-
-
   </script>
+  <a href="./productsList.ad" class="btn btn-secondary"> &laquo; 쇼핑 계속하기</a>
+  <hr>
+  <jsp:include page="../inc/footer.jsp" />
 </body>
 </html>

@@ -1,8 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
          pageEncoding="UTF-8"%>
-<%@ page import="java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ page import="java.util.*"%>
+<%@ page import="com.teamProject.admin.model.ProductsDAO"%>
+<%@ page import="com.teamProject.admin.model.ProductsDTO"%>
+<%
+  String sessionId = (String) session.getAttribute("sessionId");
+  List boardList = (List) request.getAttribute("boardlist");
+  int total_record = ((Integer) request.getAttribute("total_record")).intValue();
+  int pageNum = ((Integer) request.getAttribute("pageNum")).intValue();
+  int total_page = ((Integer) request.getAttribute("total_page")).intValue();
+  int limit = ((Integer) request.getAttribute("limit")).intValue();
+%>
 
 <!DOCTYPE html>
 <html>
@@ -79,52 +88,100 @@
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
         <%-- 제품 목록 출력 --%>
-        <%@ include file="../inc/dbconn.jsp"%>
         <%
-          String sql = "select * from products";
-          pstmt = conn.prepareStatement(sql);
-          rs = pstmt.executeQuery();
-          while (rs.next()) {
+          //목록에 노출되는 게시물 번호를 전체 게시물의 수 기준으로.
+          int serialNumber = total_record - ((pageNum - 1) * limit); //게시물일련번호
+
+          for (int j = 0; j < boardList.size(); j++) {
+            ProductsDTO rs = (ProductsDTO) boardList.get(j);
         %>
         <div class="col my-5">
-          <div class="card shadow-sm" style="height: 500px;">
+          <div class="card shadow-sm" style="height: 550px;">
             <img
-                    src="${pageContext.request.contextPath}/resources/images/<%=rs.getString("fileName")%>"
-                    style="height: 300px;width: 100%" alt="">
+                    src="${pageContext.request.contextPath}/resources/images/<%=rs.getFileName()%>"
+                    style="height: 300px; width: 100%" alt="">
 
 
             <div class="card-body">
-              <h2><%=rs.getString("productName")%></h2>
-              <p class="card-text"><%=rs.getString("description")%></p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="./product.jsp?productId=<%=rs.getString("productId")%>" class="btn btn-sm btn-outline-secondary" role="button">
-                    View &raquo;</a>
-                </div>
-                <small class="text-muted"><%=rs.getString("regist_day")%></small>
+              <h5 class="fw-bold"><%=rs.getProductName()%></h5>
+              <p class="card-text"><%=rs.getDescription()%></p>
+            </div>
+            <div
+                    class="card-footer d-flex justify-content-between align-items-end" style="border: 0">
+              <div class="btn-group">
+                <a href="./product.jsp?productId=<%=rs.getProductId()%>&pageNum=<%=pageNum %>"
+                   class="btn btn-sm btn-outline-secondary" role="button">
+                  View &raquo;</a>
               </div>
+              <small class="text-muted"><%=rs.getRegist_day()%></small>
             </div>
           </div>
         </div>
         <%
+            serialNumber--;
           }
         %>
 
       </div>
 
     </div>
-    <div align="center">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center mt-5">
-          <li class="page-item disabled"><a class="page-link">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-      </nav>
-    </div>
+
+    <%
+      int pagePerBlock = 5; // 페이지 출력시 나올 범위
+      int totalBlock = total_page % pagePerBlock == 0 ? total_page / pagePerBlock : total_page / pagePerBlock + 1;//전체 블럭수
+      int thisBlock = ((pageNum - 1) / pagePerBlock) + 1; //현재 블럭
+      int firstPage = ((thisBlock - 1) * pagePerBlock) + 1; //블럭의 첫 페이지
+      int lastPage = thisBlock * pagePerBlock; //블럭의 마지막 페이지
+      lastPage = (lastPage > total_page) ? total_page : lastPage;
+    %>
+    <c:set var="pagePerBlock" value="<%=pagePerBlock%>" />
+    <c:set var="totalBlock" value="<%=totalBlock%>" />
+    <c:set var="thisBlock" value="<%=thisBlock%>" />
+    <c:set var="firstPage" value="<%=firstPage%>" />
+    <c:set var="lastPage" value="<%=lastPage%>" />
+
+    <c:set var="pageNum" value="<%=pageNum%>" />
+
+
+    <c:forEach var="i" begin="<%=firstPage%>" end="${lastPage}">
+
+      <c:choose>
+        <c:when test="${pageNum==i}">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-sm justify-content-center">
+              <li class="page-item"><a class="page-link"
+                                       href="<c:url value="./productsList.ad?pageNum=1"/>">첫 페이지</a></li>
+              <c:if test="${thisBlock > 1}">
+                <li class="page-item"><a class="page-link"
+                                         href="<c:url value="./productsList.ad?pageNum=${firstPage -1}"/>">이전</a>
+                </li>
+              </c:if>
+              <c:forEach var="i" begin="<%=firstPage%>" end="${lastPage}">
+                <c:choose>
+                  <c:when test="${pageNum==i}">
+                    <a class="page-link active"
+                       href="<c:url value="productsList.ad?pageNum=${i}"/>">
+                        ${i} </a>
+                  </c:when>
+                  <c:otherwise>
+                    <a class="page-link"
+                       href="<c:url value="./productsList.ad?pageNum=${i}"/>">${i}</a>
+                  </c:otherwise>
+                </c:choose>
+              </c:forEach>
+              <c:if test="${thisBlock < totalBlock}">
+                <li class="page-item"><a class="page-link"
+                                         href="<c:url value="./productsList.ad?pageNum=${lastPage + 1}"/>">다음</a>
+                </li>
+              </c:if>
+              <li class="page-item"><a class="page-link"
+                                       href="<c:url value="./productsList.ad?pageNum=${total_page}"/>">끝
+                페이지</a></li>
+            </ul>
+          </nav>
+        </c:when>
+      </c:choose>
+    </c:forEach>
   </div>
 
 

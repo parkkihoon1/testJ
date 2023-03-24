@@ -24,6 +24,7 @@
       </li>
     </ul>
   </div>
+  <a href="Logout.lo" class="btn btn-danger" role="button" style="position: absolute; bottom: 20px; left: 20px;">로그아웃</a>
 </nav>
 <script>
   feather.replace()

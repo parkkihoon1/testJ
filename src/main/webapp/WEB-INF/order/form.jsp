@@ -1,7 +1,12 @@
+<%@page import="com.teamProject.member.model.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%
+  String sessionId = (String) session.getAttribute("sessionId");
+
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,35 +44,45 @@
       <th></th>
     </tr>
   </table>
+  <%@ include file="/inc/dbconn.jsp"%>
+    <%
+		String id = (String) session.getAttribute("sessionId");
+
+		String sql = "select * from member where id = ?";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, id);
+		rs = pstmt.executeQuery();
+		if (rs.next()) {
+	%>
   <form action="./pay.co" class="form-horizontal" method="post">
     <div class="form-group row">
       <label class="col-sm-2">주문자 이름</label>
       <div class="col-sm-3">
-        <input name="orderName" value="이름" type="text" class="form-control"/>
+        <input name="orderName" value="<%=rs.getString("name") %>" type="text" class="form-control"/>
       </div>
     </div>
     <div class="form-group row">
       <label class="col-sm-2">주문자 연락처</label>
       <div class="col-sm-3">
-        <input name="orderTel" value="연락처" type="text" class="form-control"/>
+        <input name="orderTel" value="<%=rs.getString("phone") %>" type="text" class="form-control"/>
       </div>
     </div>
     <div class="form-group row">
       <label class="col-sm-2">주문자 이메일</label>
       <div class="col-sm-3">
-        <input name="orderEmail" value="이메일" type="text" class="form-control"/>
+        <input name="orderEmail" value="<%=rs.getString("mail") %>" type="text" class="form-control"/>
       </div>
     </div>
     <div class="form-group row">
       <label class="col-sm-2">받는 사람 이름</label>
       <div class="col-sm-3">
-        <input name="receiveName" value="받는 사람 이름" type="text" class="form-control"/>
+        <input name="receiveName" value="" type="text" class="form-control"/>
       </div>
     </div>
     <div class="form-group row">
       <label class="col-sm-2">받는 사람 연락처</label>
       <div class="col-sm-3">
-        <input name="receiveTel" value="받는 사람 연락처" type="text" class="form-control"/>
+        <input name="receiveTel" value="" type="text" class="form-control"/>
       </div>
     </div>
     <div class="form-group row">
@@ -86,6 +101,15 @@
     </div>
 
   </form>
+    <%
+	}
+	if (rs != null)
+	rs.close();
+	if (pstmt != null)
+	pstmt.close();
+	if (conn != null)
+	conn.close();
+	%>
 
   <script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script>
   <script>
@@ -131,6 +155,5 @@
       }).open();
     }
   </script>
-</div>
 </body>
 </html>

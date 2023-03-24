@@ -2,9 +2,9 @@ package com.teamProject.myPage.model;
 
 public class LikeDTO {
     private String memberId;
-    private String productId; //  ǰ    ̵
-    private String productName;	//   ǰ
-    private String fileName; // ̹
+    private String productId; //��ǰ ���̵�
+    private String productName;	// ��ǰ��
+    private String fileName; //�̹���
 
 
     public String getMemberId() {

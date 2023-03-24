@@ -82,15 +82,15 @@
       <input type="text" name="birthyy" class="form-control" maxlength="4" placeholder="년(4자)" size="6">
       <select name="birthmm" class="form-control">
         <option value="">월</option>
-        <option value="01">1</option>
-        <option value="02">2</option>
-        <option value="03">3</option>
-        <option value="04">4</option>
-        <option value="05">5</option>
-        <option value="06">6</option>
-        <option value="07">7</option>
-        <option value="08">8</option>
-        <option value="09">9</option>
+        <option value="01">01</option>
+        <option value="02">02</option>
+        <option value="03">03</option>
+        <option value="04">04</option>
+        <option value="05">05</option>
+        <option value="06">06</option>
+        <option value="07">07</option>
+        <option value="08">08</option>
+        <option value="09">09</option>
         <option value="10">10</option>
         <option value="11">11</option>
         <option value="12">12</option>
@@ -111,10 +111,10 @@
     <div class="col-sm-7 d-flex">
       <input type="text" class="form-control" id="mail1" maxlength="50" name="mail1" placeholder="email">@
       <select name="mail2" id="mail2" class="form-control">
-        <option>naver.com</option>
-        <option>daum.net</option>
-        <option>gmail.com</option>
-        <option>nate.com</option>
+        <option value="naver.com">naver.com</option>
+        <option value="daum.net">daum.net</option>
+        <option value="gmail.com">gmail.com</option>
+        <option value="nate.com">nate.com</option>
       </select>
     </div>
   </div>

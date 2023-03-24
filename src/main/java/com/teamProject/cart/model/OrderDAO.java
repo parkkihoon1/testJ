@@ -161,7 +161,7 @@ public class OrderDAO {
                 }
                 orderProductCnt++;
             }
-            orderProductName += "  " + (orderProductCnt - 1) + "  ";
+            orderProductName += " 외 " + (orderProductCnt - 1) + "건";
         }	catch (Exception ex) {
             System.out.println("getOrderProductName()      : " + ex);
         }
@@ -281,6 +281,7 @@ public class OrderDAO {
                 orderInfo.setOrderName(rs.getString("orderName"));
                 orderInfo.setOrderTel(rs.getString("orderTel"));
                 orderInfo.setOrderEmail(rs.getString("orderEmail"));
+                orderInfo.setReceiveName(rs.getString("receiveName"));
                 orderInfo.setReceiveTel(rs.getString("receiveTel"));
                 orderInfo.setReceiveAddress(rs.getString("receiveAddress"));
                 orderInfo.setPayAmount(rs.getInt("payAmount"));

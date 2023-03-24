@@ -38,7 +38,6 @@ public class CartDAO {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, orderNum);
             preparedStatement.setString(2, productId);
-
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -191,7 +190,7 @@ public class CartDAO {
     public boolean deleteCartSel(String orderNum, String chkdId) throws SQLException {
         //          ǰ
         int flag = 0;
-        String sql = "DELETE FROM cart WHERE orderNum = '" + orderNum + "' AND cartId IN (" + chkdId + ") ";
+        String sql = "DELETE FROM cart WHERE orderNum = '" + orderNum + "' AND cartId IN (" + chkdId + ")";
         statement = connection.createStatement();
         flag = statement.executeUpdate(sql);
         return flag != 0;

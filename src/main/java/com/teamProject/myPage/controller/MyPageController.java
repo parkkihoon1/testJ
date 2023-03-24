@@ -43,9 +43,13 @@ public class MyPageController extends HttpServlet {
         System.out.println(command);
 
         if (command.contains("/jjimListAction.my")) {
-            requestjjimList(req);
-            RequestDispatcher rd = req.getRequestDispatcher("../shop_db/jjimList.jsp");
-            rd.forward(req, resp);
+            try {
+                requestjjimList(req, resp);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
 
         } else if (command.contains("/addjjim.my")) {
             try {
@@ -66,21 +70,32 @@ public class MyPageController extends HttpServlet {
             rd.forward(req, resp);
 
         } else if (command.contains("/orderList.my")) {
-            requestOrderList(req);
-            RequestDispatcher rd = req.getRequestDispatcher("../shop_db/orderList.jsp");
-            rd.forward(req, resp);
+            try {
+                requestOrderList(req, resp);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
         } else if (command.contains("/myPostList.my")) {
-            requestMyPostList(req);
-            RequestDispatcher rd = req.getRequestDispatcher("../shop_db/myPost.jsp");
-            rd.forward(req, resp);
+            try {
+                requestMyPostList(req, resp);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
 
         }
     }
 
-    private void requestMyPostList(HttpServletRequest req) {
+    private void requestMyPostList(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HttpSession session = req.getSession();
         String sessionId = (String) session.getAttribute("sessionId");
+
+        if (sessionId == null) {
+            resp.sendRedirect("../member/loginMember.jsp?");
+        }
 
         BoardDAO dao = BoardDAO.getInstance();
         List<BoardDTO> boardlist = new ArrayList<BoardDTO>();
@@ -110,13 +125,18 @@ public class MyPageController extends HttpServlet {
         req.setAttribute("boardlist", boardlist);
         req.setAttribute("sessionId", sessionId);
 
+        RequestDispatcher rd = req.getRequestDispatcher("../shop_db/myPost.jsp");
+        rd.forward(req, resp);
+
     }
 
-
-
-    private void requestOrderList(HttpServletRequest req) {
+    private void requestOrderList(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HttpSession session = req.getSession();
         String sessionId = (String) session.getAttribute("sessionId");
+
+        if (sessionId == null) {
+            resp.sendRedirect("../member/loginMember.jsp?");
+        }
 
         OrderDAO dao = OrderDAO.getInstance();
         List<OrderInfoDTO> orderinfolist = new ArrayList<OrderInfoDTO>();
@@ -149,6 +169,9 @@ public class MyPageController extends HttpServlet {
         req.setAttribute("orderDatalist", orderDatalist);
         req.setAttribute("sessionId", sessionId);
 
+        RequestDispatcher rd = req.getRequestDispatcher("../shop_db/orderList.jsp");
+        rd.forward(req, resp);
+
     }
 
     private void requestAddjjim(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -164,26 +187,26 @@ public class MyPageController extends HttpServlet {
             resp.sendRedirect("exceptionNoProductId.jsp");
         }
 
-
         String memberId = (String) session.getAttribute("sessionId");
 
         LikeDAO likeDAO = new LikeDAO();
 
         likeDAO.insertLike(product, memberId);
 
-
         resp.sendRedirect("./product.jsp?productId=" + productId);
 
         req.setAttribute("sessionId", sessionId);
         req.setAttribute("productId", productId);
 
-
-
     }
 
-    private void requestjjimList(HttpServletRequest req) {
+    private void requestjjimList(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HttpSession session = req.getSession();
         String sessionId = (String) session.getAttribute("sessionId");
+
+        if (sessionId == null) {
+            resp.sendRedirect("../member/loginMember.jsp?");
+        }
 
         LikeDAO dao = LikeDAO.getInstance();
         List<LikeDTO> boardlist = new ArrayList<LikeDTO>();
@@ -213,10 +236,10 @@ public class MyPageController extends HttpServlet {
         req.setAttribute("jjimlist", boardlist);
         req.setAttribute("sessionId", sessionId);
 
+        RequestDispatcher rd = req.getRequestDispatcher("../shop_db/jjimList.jsp");
+        rd.forward(req, resp);
+
     }
-
-
-
 
     private void requestDeletejjim(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         LikeDAO likedao = LikeDAO.getInstance();

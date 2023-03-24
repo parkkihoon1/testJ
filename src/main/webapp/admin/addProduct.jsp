@@ -11,6 +11,7 @@
   <script src="https://unpkg.com/feather-icons"></script>
   <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
   <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+  <script src="../resources/js/chkProductForm.js" defer></script>
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -44,7 +45,7 @@
             <h3>제품 등록</h3>
           </div>
           <div class="col-1">
-            <a href="adminProducts.jsp" class="btn btn-primary" role="button">등록 취소</a>
+            <a href="AdminProductsList.ad" class="btn btn-primary" role="button">등록 취소</a>
           </div>
         </div>
         <br>
@@ -53,7 +54,8 @@
           <div class="form-group row">
             <label class="col-sm-2">제품 ID</label>
             <div class="col-sm-3">
-              <input type="text" name="productId" class="form-control">
+              <input type="text" name="productId" class="form-control" id="productId">
+              <span class="idCheck"></span>
             </div>
           </div>
           <br>

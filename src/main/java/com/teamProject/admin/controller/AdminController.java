@@ -4,6 +4,8 @@ import com.teamProject.admin.model.*;
 
 import com.teamProject.admin.model.ProductsDAO;
 import com.teamProject.admin.model.ProductsDTO;
+import com.teamProject.board.model.BoardDAO;
+import com.teamProject.board.model.BoardDTO;
 
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,6 +76,17 @@ public class AdminController extends HttpServlet {
             requestDeleteProduct(req);
             RequestDispatcher rd = req.getRequestDispatcher("../admin/AdminProductsList.ad");
             rd.forward(req, resp);
+        } else if (command.contains("ajaxIdCheck.ad")) {
+            PrintWriter out = resp.getWriter(); // out 객체
+            String productId = req.getParameter("productId");
+            System.out.println(productId);
+            ProductsDAO productsDAO = ProductsDAO.getInstance();
+            boolean result = productsDAO.checkProductId(productId);
+            if (result == true) {
+                out.print("true");
+            } else {
+                out.print("false");
+            }
         }
 
 
@@ -106,7 +120,15 @@ public class AdminController extends HttpServlet {
             RequestDispatcher rd = req.getRequestDispatcher("../shop_db/products.jsp");
             rd.forward(req, resp);
         }
+
+        else if (command.contains("/productView.ad")) { // !!!!!제품 목록 리스트 추가
+            productView(req);
+            RequestDispatcher rd = req.getRequestDispatcher("../shop_db/product.jsp");
+            rd.forward(req, resp);
+        }
     }
+
+
 
     private void requestShippinDone(HttpServletRequest req) {
         String orderNum = req.getParameter("orderNum");
@@ -215,7 +237,7 @@ public class AdminController extends HttpServlet {
         ProductsDAO productsDAO = ProductsDAO.getInstance();
 
         // 폼 페이지에서 전송된 파일을 저장할 서버의 경로를 작성.
-        String path = "/Users/kihaeng/study/teamProject/src/main/webapp/resources/images"; // 상대 경로 (아파치 bin 폴더에 upload 폴더가 만들어짐)
+        String path = "C:\\Users\\KIHOON\\IdeaProjects\\market\\src\\main\\webapp\\resources\\images"; // 상대 경로 (아파치 bin 폴더에 upload 폴더가 만들어짐)
 
         // 파일 업로드를 위해 DiskFileUpload 클래스를 생성.
         DiskFileUpload upload = new DiskFileUpload();
@@ -273,9 +295,18 @@ public class AdminController extends HttpServlet {
                 String fileName = item.getName();
                 String contentType = item.getContentType();
 
-                if(!fileName.isEmpty()){
+                if(!fileName.isEmpty()) {
                     System.out.println("파일 이름 : " + fileName);
                     fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+
+                    if (new File(path + "/" + fileName).exists()) {
+                        Date date = new Date();
+                        SimpleDateFormat today = new SimpleDateFormat("yyyyMMddHHmmss");
+                        String date1 = today.format(date);
+                        int num = fileName.indexOf(".");
+                        fileName = fileName.substring(0, num) + date1 + "." + fileName.substring(num + 1);
+                    }
+
                     long fileSize = item.getSize();
 
                     File file = new File(path + "/" + fileName);
@@ -372,7 +403,8 @@ public class AdminController extends HttpServlet {
         ProductsDAO productsDAO = ProductsDAO.getInstance();
 
         // 폼 페이지에서 전송된 파일을 저장할 서버의 경로를 작성.
-        String path = "/Users/kihaeng/study/teamProject/src/main/webapp/resources/images";
+        String path = "C:\\Users\\KIHOON\\IdeaProjects\\market\\src\\main\\webapp\\resources\\images";
+
 
         // 파일 업로드를 위해 DiskFileUpload 클래스를 생성.
         DiskFileUpload upload = new DiskFileUpload();
@@ -494,5 +526,22 @@ public class AdminController extends HttpServlet {
         req.setAttribute("total_page", total_page);
         req.setAttribute("total_record", total_record);
         req.setAttribute("boardlist", productList);
+    }
+
+
+    private void productView(HttpServletRequest req) {
+        ProductsDAO dao = ProductsDAO.getInstance();
+        String productId = req.getParameter("productId");
+        int num = Integer.parseInt(req.getParameter("num"));
+        int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+
+        ProductsDTO productsDTO = new ProductsDTO();
+        productsDTO = dao.getBoardByNum(productId, pageNum);
+        System.out.println(num);
+        req.setAttribute("num", num);
+        req.setAttribute("productId", productId);
+        req.setAttribute("page", pageNum);
+        req.setAttribute("productsDTO", productsDTO);
+
     }
 }

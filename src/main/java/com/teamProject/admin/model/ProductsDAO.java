@@ -1,6 +1,7 @@
 package com.teamProject.admin.model;
 
 import com.teamProject.admin.database.DBConnection;
+import com.teamProject.board.model.BoardDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
@@ -299,5 +300,87 @@ public class ProductsDAO {
                 throw new RuntimeException(ex.getMessage());
             }
         }
+    }
+
+    public ProductsDTO getBoardByNum(String productId, int pageNum) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        ProductsDTO productsDTO = null;
+
+        String sql = "SELECT * FROM products WHERE productId = ? ";
+
+
+        try {
+            conn = DBConnection.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, productId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                productsDTO = new ProductsDTO();
+                productsDTO.setProductId(rs.getString("productId"));
+                productsDTO.setProductName(rs.getString("productName"));
+                productsDTO.setProductPrice(rs.getInt("productPrice"));
+                productsDTO.setDescription(rs.getString("description"));
+                productsDTO.setProductsInStock(rs.getInt("productsInStock"));
+                productsDTO.setFileName(rs.getString("fileName"));
+                productsDTO.setRegist_day(rs.getString("regist_day"));
+            }
+            return productsDTO;
+        } catch (Exception ex) {
+            System.out.println("getBoardByNum() 에러 : " + ex);
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (conn != null)
+                    conn.close();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        }
+        return null;
+    }
+
+
+    public boolean checkProductId(String productId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT * FROM `products` WHERE productId = ?";
+
+        boolean flag = true; // 동일한 아이디가 없을 경우
+
+        try {
+            conn = DBConnection.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, productId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                flag = false; // 동일한 아이디가 있는 경우
+            } else {
+                flag = true;
+            }
+        } catch (Exception ex) {
+            System.out.println("checkProductId() 에러 : " + ex);
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (conn != null)
+                    conn.close();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        }
+        return flag;
+
     }
 }

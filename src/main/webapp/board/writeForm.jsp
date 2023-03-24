@@ -30,16 +30,12 @@
 </script>
 <body>
 <jsp:include page="../inc/header.jsp"/>
-<div class="jumbotron">
-    <div class="container">
-        <h1 class="display-3">게시판</h1>
-    </div>
-</div>
+
 
 <div class="container">
 
     <form name="newWrite" action="./BoardWriteAction.do"
-          class="form-horizontal" method="post" enctype="multipart/form-data" onsubmit="return checkForm()">
+          class="form-horizontal mt-5" method="post" enctype="multipart/form-data" onsubmit="return checkForm()">
         <input name="id" type="hidden" class="form-control"
                value="${sessionId}">
         <div class="form-group row">

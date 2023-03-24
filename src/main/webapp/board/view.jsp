@@ -26,12 +26,12 @@
 
             document.querySelector('span[name=goReport]').addEventListener('click', function () {
 
-                const report = prompt("신고 사유를 입력해주세요." + "");
+                let report = prompt("신고 사유를 입력해주세요." + "");
                 let num = document.querySelector('input[name=num]');
                 let subject = document.querySelector('input[name=subject]');
-                let content = document.querySelector('textarea[name=report]');
+                // let content = document.querySelector('textarea[name=report]');
 
-
+                if (report == null || report === "") return;
 
 
                 xhr.open('POST', '../boardController/ReportAction.do?report=' + report + '&num=' + num.value + '&subject=' + subject.value);
@@ -58,9 +58,10 @@
 
 </head>
 <body>
+<script type="text/javascript" src="../resources/js/riple.js"></script>
 <jsp:include page="../inc/header.jsp"/>
 
-<div class="container my-5">
+<div class="container mt-5">
     <div class="mb-4 row">
         <label class="col-sm-2 col-form-label text-center">회원ID</label>
         <div class="col-sm-10">
@@ -108,7 +109,7 @@
     <!-- 리플쓰기, 로그인 상태에서만 나옴 -->
     <hr>
     <c:if test="${sessionId != null}">
-        <form name="frmRipple" class="form-horizontal" method="post">
+        <form name="frmRipple" class="form-horizontal" method="post" >
             <input type="hidden" name="num" value="<%=board.getNum()%>">
             <input type="hidden" name="pageNum" value="${page}">
             <p>댓글 등록 </p>
@@ -131,16 +132,19 @@
                 </div>
             </div>
         </form>
+
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const xhr = new XMLHttpRequest(); //XMLHttpRequest 객체 생성
 
                 document.querySelector('span[name=goRippleSubmit]').addEventListener('click', function () {
+
                     /* 등록 버튼 클릭시
                     1)데이터 베이스에 데이터 등록 2) 화면에 표시 */
                     let num = document.querySelector('input[name=num]');
                     let name = document.querySelector('input[name=name]');
                     let content = document.querySelector('textarea[name=content]');
+
 
                     //xhr.open('POST', '../board/ajax_insert_content.jsp?boardName=board&num=' +
                     //num.value + '&name=' + name.value + '&content=' + content.value);

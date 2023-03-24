@@ -18,12 +18,8 @@
 </head>
 <body>
 <jsp:include page="../inc/header.jsp"/>
-<div class="jumbotron">
-    <div class="container">
-        <h1 class="display-3">게시판</h1>
-    </div>
-</div>
-<div class="container">
+
+<div class="container mt-5" >
     <form name="newUpdate"
           action="BoardUpdateAction.do?num=<%=board.getNum()%>&pageNum=<%=nowpage%>"
           class="form-horizontal" enctype="multipart/form-data" method="post">

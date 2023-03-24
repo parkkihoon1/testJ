@@ -44,6 +44,11 @@
                 <h6 class="mb-0">주문 번호 : <%=orderInfo.getOrderNum()%></h6>
                 <p class="mb-0 opacity-75">주문 금액 : <%=orderInfo.getPayAmount()%> 원</p>
                 <p class="mb-0 opacity-75">주문 상태 : <%=orderInfo.getOrderStep()%></p>
+                <p class="mb-0 opacity-75">주문자 이름 : <%=orderInfo.getOrderName()%></p>
+                <p class="mb-0 opacity-75">주문자 연락처 : <%=orderInfo.getOrderTel()%></p>
+                <p class="mb-0 opacity-75">받는사람 이름 : <%=orderInfo.getReceiveName()%></p>
+                <p class="mb-0 opacity-75">받는사람 연락처 : <%=orderInfo.getReceiveTel()%></p>
+                <p class="mb-0 opacity-75">받는사람 주소 : <%=orderInfo.getReceiveAddress()%></p>
             </div>
             <small class="opacity-50 text-nowrap">주문 날짜 : <%=orderInfo.getDateOrder()%></small>
         </div>

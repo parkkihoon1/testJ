@@ -57,11 +57,26 @@
 
     </div>
 
-  </a> <a href="./deletejjim.my?productId=<%=list.getProductId()%>"
+  </a> <a onclick="checkForm()" href="./deletejjim.my?productId=<%=list.getProductId()%>"
           class="btn btn-light">삭제</a>
-  </form>
-</div>
 
+</div>
+<%--if (confirm("상품을 장바구니에 추가하시겠습니까?")) {--%>
+<%--document.addForm.submit();--%>
+<%--} else {--%>
+<%--document.addForm.reset();--%>
+<%--}--%>
+<script>
+  function checkForm(){
+    if(confirm("삭제하시겠습니까")) {
+      location.href = "./deletejjim.my?productId=<%=list.getProductId()%>"
+    }
+      else{
+      alert("취소했습니다")
+      }
+
+  }
+</script>
 <%
   }
 %>

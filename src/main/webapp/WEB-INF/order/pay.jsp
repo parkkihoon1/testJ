@@ -61,6 +61,7 @@
       </div>
     </div>
   </section>
+</div>
   <script src="https://js.tosspayments.com/v1"></script>
   <script>
     var tossPayments = TossPayments("test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq");
@@ -85,6 +86,6 @@
       tossPayments.requestPayment(method, paymentData);
     });
   </script>
-</div>
+
 </body>
 </html>

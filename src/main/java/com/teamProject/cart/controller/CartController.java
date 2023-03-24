@@ -59,10 +59,12 @@ public class CartController extends HttpServlet {
         }
 
         else if (command.contains("cart.jsp")) {
+
             CartDAO cartDAO = new CartDAO();
 
             HttpSession session = req.getSession();  //
             String orderNo = session.getId();
+            cartDAO.updateCartBylogin(session);
 
             ArrayList<CartDTO> carts = cartDAO.getCartList(orderNo);
             req.setAttribute("carts", carts);

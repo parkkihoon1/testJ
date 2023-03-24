@@ -22,6 +22,18 @@
     background: url(../images/mainImg4.jpg) no-repeat center right / cover;
 }
 
+.mainImg5 {
+    width: 500px;
+    height: 500px;
+    background: url(../images/mainImg5.jpg) no-repeat center right / cover;
+}
+
+.mainImg6 {
+    width: 500px;
+    height: 500px;
+    background: url(../images/mainImg6.jpg) no-repeat center right / cover;
+}
+
 .carousel-item {
     height: 32rem;
 }

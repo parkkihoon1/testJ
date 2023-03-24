@@ -328,11 +328,11 @@ public class OrderController extends HttpServlet {
         CartDAO cartDAO = new CartDAO();
         HttpSession session = req.getSession();
         ArrayList<CartDTO> carts = cartDAO.getCartList(session.getId());
-        System.out.println(carts);
+        System.out.println("carts" + carts);
 
         // CartList   OrderData List
         ArrayList<OrderDataDTO> dtos = changeCartData(carts, orderNo);
-        System.out.println(dtos);
+        System.out.println("dtos" + dtos);
 
         // OrderData List             ̽
         for(OrderDataDTO dto : dtos) {

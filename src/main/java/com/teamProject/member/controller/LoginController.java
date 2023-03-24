@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import com.teamProject.member.database.DBConnection;
 import com.teamProject.member.model.MemberDAO;
+import com.teamProject.member.model.MemberDTO;
 
 @WebServlet("*.lo")
 public class LoginController extends HttpServlet {
@@ -29,9 +30,9 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String RequestURI = req.getRequestURI(); // 전체 경로를 가져옴.
-        String contextPath = req.getContextPath(); // 프로젝트 Path만 가져옴.
-        String command =  RequestURI.substring(contextPath.length()); // 전체경로에서 프로젝트 Path 길이 만큼의 인덱스 이후의 문자열을 가져옴.
+        String RequestURI = req.getRequestURI(); //   ü   θ        .
+        String contextPath = req.getContextPath(); //       Ʈ Path         .
+        String command =  RequestURI.substring(contextPath.length()); //   ü  ο          Ʈ Path        ŭ    ε              ڿ          .
 
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
@@ -39,34 +40,36 @@ public class LoginController extends HttpServlet {
 
 
 
-        // 로그인 페이지
-        if(command.contains("/LoginPage.lo")) { // 로그인 페이지 출력
+        //  α
+        if(command.contains("/LoginPage.lo")) { //  α
 
             RequestDispatcher rd = req.getRequestDispatcher("/member/loginMember.jsp");
             if (rd != null) {
                 rd.forward(req, resp);
             } else {
-                // 에러 처리 코드
+                //      ó    ڵ
                 // rd = req.getRequestDispatcher("/error/404error.jsp");
             }
         }
-        else if(command.contains("/Login.lo")) { // 로그인 버튼 눌렀을 때
+        else if(command.contains("/Login.lo")) { //  α      ư
             RequestDispatcher rd = null;
 
             try {
                 int loginResult = requestLoginMember(req, resp);
-                if(loginResult == 0) { // state == 0 일반회원 로그인
+                if(loginResult == 0) { // state == 0  Ϲ ȸ    α
                     rd = req.getRequestDispatcher("/index.jsp");
-                    // 합칠떄 인덱스로 가게 만들기
+                    //   ĥ    ε
                 }
-                else if(loginResult == 1) { // state == 1 이용 제한 고객
-                    rd = req.getRequestDispatcher("/member/processResultMember.jsp");
+                else if(loginResult == 1) { // state == 1  ̿
+                    rd = req.getRequestDispatcher("/member/loginFailed.jsp");
+                    rd.forward(req, resp);
                 }
-                else if(loginResult == 2) { // state == 2 탈퇴한 회원
-                    rd = req.getRequestDispatcher("/member/processResultMember.jsp");
+                else if(loginResult == 2) { // state == 2 Ż     ȸ
+                    rd = req.getRequestDispatcher("/member/loginFailed.jsp");
+                    rd.forward(req, resp);
                 }
-                else if(loginResult == 3) { // state == 3 관리자 로그인
-                    rd = req.getRequestDispatcher("/member/processResultMember.jsp");
+                else if(loginResult == 3) { // state == 3         α
+                    rd = req.getRequestDispatcher("/admin/AdminProductsList.ad");
                 }
                 else {
                     rd = req.getRequestDispatcher("/member/loginMember.jsp?error=1");
@@ -78,41 +81,41 @@ public class LoginController extends HttpServlet {
 
             rd.forward(req, resp);
         }
-        else if(command.contains("/AddMemberPage.lo")) { // 회원 가입페이지로 이동
+        else if(command.contains("/AddMemberPage.lo")) { // ȸ                 ̵
 
             RequestDispatcher rd = req.getRequestDispatcher("/member/addMember.jsp");
             rd.forward(req, resp);
         }
-        else if(command.contains("/AddMember.lo")) { // 회원가입 버튼 클릭시
+        else if(command.contains("/AddMember.lo")) { // ȸ         ư Ŭ
             addMember(req, resp);
             RequestDispatcher rd = req.getRequestDispatcher("/member/resultMember.jsp?msg=1");
             rd.forward(req, resp);
 
 
         }
-        else if(command.contains("AjaxIdCheck.lo")) { // 회원 아이디 중복 확인
+        else if(command.contains("AjaxIdCheck.lo")) { // ȸ      ̵   ߺ  Ȯ
             //idCheck(req, resp);
             String result = idCheck(req, resp);
             req.setAttribute("result", result);
             RequestDispatcher rd = req.getRequestDispatcher("/member/popupIdCheck.jsp");
             rd.forward(req, resp);
         }
-        else if(command.contains("UpdateMemberPage.lo")) { // 회원 수정으로 이동
-
+        else if(command.contains("UpdateMemberPage.lo")) { // ȸ             ̵
+            moveUpdateMember(req, resp);
             RequestDispatcher rd = req.getRequestDispatcher("/member/updateMember.jsp");
             rd.forward(req, resp);
         }
-        else if(command.contains("UpdateMember.lo")) { // 회원 수정하기 버튼 클릭시
+        else if(command.contains("UpdateMember.lo")) { // ȸ        ϱ    ư Ŭ
             updateMember(req, resp);
             RequestDispatcher rd = req.getRequestDispatcher("/member/resultMember.jsp?msg=0");
             rd.forward(req, resp);
         }
-        else if(command.contains("Logout.lo")) { // 로그아웃 버튼 클릭 시
+        else if(command.contains("Logout.lo")) { //  α׾ƿ    ư Ŭ
             logoutMember(req, resp);
             RequestDispatcher rd = req.getRequestDispatcher("/LoginPage.lo");
             rd.forward(req, resp);
         }
-        else if(command.contains("WithdrawalMember.lo")) { // 회원 탈퇴 버튼 클릭시
+        else if(command.contains("WithdrawalMember.lo")) { // ȸ   Ż     ư Ŭ
             withdrawalMember(req, resp);
 
             RequestDispatcher rd = req.getRequestDispatcher("/LoginPage.lo");
@@ -146,7 +149,7 @@ public class LoginController extends HttpServlet {
 
 
         } catch (Exception e) {
-            System.out.println("withdrawalMember() 에러 : " + e);
+            System.out.println("withdrawalMember()      : " + e);
         }
         finally {
             try {
@@ -179,7 +182,7 @@ public class LoginController extends HttpServlet {
 
 
         String id = (String) session.getAttribute("sessionId");
-        //String id = request.getParameter("id"); 이렇게 쓰면 해킹 당함
+        //String id = request.getParameter("id");  ̷           ŷ
         String password = req.getParameter("password");
         String name = req.getParameter("name");
         String gender = req.getParameter("gender");
@@ -229,7 +232,7 @@ public class LoginController extends HttpServlet {
 
             req.setAttribute("msg", 0);
         } catch (Exception e) {
-            System.out.println("updateMember() 에러 : " + e);
+            System.out.println("updateMember()      : " + e);
         }
         finally {
             try {
@@ -270,7 +273,7 @@ public class LoginController extends HttpServlet {
 
 
         } catch (Exception e) {
-            System.out.println("idCheck() 에러 : " + e);
+            System.out.println("idCheck()      : " + e);
         }
         finally {
             try {
@@ -328,7 +331,7 @@ public class LoginController extends HttpServlet {
 
             req.setAttribute("msg", 1);
         } catch (Exception e) {
-            System.out.println("addMember() 에러 : " + e);
+            System.out.println("addMember()      : " + e);
         }
         finally {
             try {
@@ -375,19 +378,19 @@ public class LoginController extends HttpServlet {
                 }
                 else if(rs.getInt(1) == 1) {
 
-
+                    req.setAttribute("result", 1);
                     result = 1;
                     return result;
                 }
                 else if(rs.getInt(1) == 2) {
 
-
+                    req.setAttribute("result", 2);
                     result = 2;
                     return result;
                 }
                 else if(rs.getInt(1) == 3) {
 
-
+                    session.setAttribute("sessionId", id);
                     result = 3;
                     return result;
                 }
@@ -408,5 +411,60 @@ public class LoginController extends HttpServlet {
     }
 
 
+    private void moveUpdateMember(HttpServletRequest req, HttpServletResponse resp) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        HttpSession session = req.getSession();
+        MemberDTO memberDTO = new MemberDTO();
+
+        String id = (String) session.getAttribute("sessionId");
+
+        try {
+            String sql = "SELECT * FROM MEMBER WHERE ID=?";
+
+            conn = DBConnection.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                memberDTO.setId(rs.getString("id"));
+                memberDTO.setPassword(rs.getString("password"));
+                memberDTO.setName(rs.getString("name"));
+                memberDTO.setBirth(rs.getString("birth"));
+                memberDTO.setGender(rs.getString("gender"));
+                memberDTO.setMail(rs.getString("mail"));
+                memberDTO.setAddress(rs.getString("address"));
+                memberDTO.setPhone(rs.getString("phone"));
+                memberDTO.setReceive_mail(rs.getString("receive_mail"));
+                memberDTO.setReceive_phone(rs.getString("receive_phone"));
+                memberDTO.setAgreement(rs.getString("agreement"));
+                memberDTO.setRegist_day(rs.getString("regist_day"));
+                memberDTO.setState(rs.getInt("state"));
+            }
+
+            req.setAttribute("memberDTO", memberDTO);
+            //req.setAttribute("sessionId", id);
+
+
+        } catch (Exception e) {
+            System.out.println("moveUpdateMember() 에러 : " + e);
+        }
+        finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+                if (conn != null)
+                    conn.close();
+                if (rs != null)
+                    rs.close();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        }
+
+    }
 
 }

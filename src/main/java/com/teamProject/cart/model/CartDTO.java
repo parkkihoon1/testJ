@@ -3,13 +3,13 @@ package com.teamProject.cart.model;
 public class CartDTO {
 
     private int cartId;
-    private String productId; //��ǰ ���̵�
-    private String productName;	// ��ǰ��
-    private int productPrice; //��ǰ ����
-    private int cnt; // ��ٱ��Ͽ� ���� ����
-    private String memberId; // ȸ�� ���̵�
-    private String orderNum; // �ֹ���ȣ
-    private String fileName; //�̹���
+    private String productId; //  ǰ    ̵
+    private String productName;	//   ǰ
+    private int productPrice; //  ǰ
+    private int cnt; //   ٱ  Ͽ
+    private String memberId; // ȸ      ̵
+    private String orderNum; //  ֹ   ȣ
+    private String fileName; // ̹
 
 
 
